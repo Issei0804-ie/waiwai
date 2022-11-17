@@ -1,8 +1,8 @@
+import datetime
 import dataset_build
 import torch
 import pytorch_lightning as pl
 from model import MaskModel
-import uuid
 
 dataset = dataset_build.MaskDataset("dataset/with_mask", "dataset/no_mask")
 
@@ -23,7 +23,7 @@ checkpoint = pl.callbacks.ModelCheckpoint(
     save_top_k=1,
     save_weights_only=True,
     dirpath="model/",
-    filename=f"best_model{str(uuid.uuid4())}"
+    filename=f"bert_{str(datetime.datetime.today())}"
 )
 
 
