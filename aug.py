@@ -51,6 +51,18 @@ def downscale(dataset_path: str):
     logger.info("downscale is finished.")
 
 
+def brightness_contrast(dataset_path: str):
+    logger.info("brightness_contrast aug starts.")
+    transform = A.Compose([
+        A.RandomBrightnessContrast([-0.4, 0.5], [-0.4, 0.5], p=1)
+    ])
+    file_paths = glob.glob(os.path.join(dataset_path, "**", "*.jpg"), recursive=True)
+    augmented_dir = os.path.join(AUGMENTATION_DIR, "brightness_contrast")
+    os.makedirs(augmented_dir, exist_ok=True)
+    augment_and_save(file_paths, augmented_dir, transform)
+    logger.info("brightness_contrast is finished.")
+
+
 def augment_and_save(file_paths: list, augmented_dir: str, transform: A.Compose):
     for file_path in file_paths:
         basename_without_ext = os.path.basename(file_path)
@@ -75,3 +87,4 @@ if __name__ == "__main__":
     flip(dataset_dir)
     blur(dataset_dir)
     downscale(dataset_dir)
+    brightness_contrast(dataset_dir)

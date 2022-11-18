@@ -3,13 +3,13 @@ import logging
 import torch
 import pytorch_lightning as pl
 import torchmetrics
-from torchvision.models import resnet18
+from torchvision.models import resnet34
 
 
 class ModifiedResNet(torch.nn.Module):
     def __init__(self, lr):
         super().__init__()
-        self.resnet = resnet18(pretrained=True)
+        self.resnet = resnet34(pretrained=True)
         num_last_features = self.resnet.fc.out_features
         self.regressor = torch.nn.Linear(num_last_features, 2)
         self.lr = lr
