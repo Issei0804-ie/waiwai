@@ -30,13 +30,25 @@ def flip(dataset_path: str):
 def blur(dataset_path: str):
     logger.info("gaussian_blur aug starts.")
     transform = A.Compose([
-        A.GaussianBlur(p=1.0)
+        A.GaussianBlur(blur_limit=[15, 17], p=1.0)
     ])
     file_paths = glob.glob(os.path.join(dataset_path, "**", "*.jpg"), recursive=True)
     augmented_dir = os.path.join(AUGMENTATION_DIR, "gaussian_blur")
     os.makedirs(augmented_dir, exist_ok=True)
     augment_and_save(file_paths, augmented_dir, transform)
     logger.info("gaussian_blur is finished.")
+
+
+def downscale(dataset_path: str):
+    logger.info("downscale aug starts.")
+    transform = A.Compose([
+        A.Downscale(scale_min=0.2, scale_max=0.3, p=1)
+    ])
+    file_paths = glob.glob(os.path.join(dataset_path, "**", "*.jpg"), recursive=True)
+    augmented_dir = os.path.join(AUGMENTATION_DIR, "downscale")
+    os.makedirs(augmented_dir, exist_ok=True)
+    augment_and_save(file_paths, augmented_dir, transform)
+    logger.info("downscale is finished.")
 
 
 def augment_and_save(file_paths: list, augmented_dir: str, transform: A.Compose):
@@ -62,3 +74,4 @@ if __name__ == "__main__":
     dataset_dir = args.dataset_dir
     flip(dataset_dir)
     blur(dataset_dir)
+    downscale(dataset_dir)
