@@ -25,8 +25,6 @@ for dir_path in aug_dirs:
     no_mask_dirs.append(os.path.join(dir_path, no_mask_path))
 
 
-aug_dirs = 0
-
 dataset = dataset_build.MaskDataset(with_mask_dirs, no_mask_dirs)
 
 n_samples = len(dataset)

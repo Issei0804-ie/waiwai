@@ -1,7 +1,6 @@
 import glob
 import os.path
 
-import torch
 import torchvision.transforms
 import torchvision.transforms as transforms
 from PIL import Image
