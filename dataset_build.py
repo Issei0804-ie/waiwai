@@ -9,7 +9,7 @@ from torch.utils.data import Dataset
 
 
 class MaskDataset(Dataset):
-    def __init__(self, mask_dir: str, non_mask_dir: str):
+    def __init__(self, mask_dirs: list, non_mask_dirs: list):
         self.preprocess = torchvision.transforms.Compose(
             [
                 transforms.Resize(255),
@@ -21,12 +21,13 @@ class MaskDataset(Dataset):
         self.images = []
         self.labels = []
 
-        dirs = [mask_dir, non_mask_dir]
+        dirs = [mask_dirs, non_mask_dirs]
         for i in range(len(dirs)):
-            raw_image_paths = glob.glob(os.path.join(dirs[i], "**", "*.jpg"), recursive=True)
-            for raw_image_path in raw_image_paths:
-                self.images.append(raw_image_path)
-                self.labels.append(i)
+            for data_dir in dirs[i]:
+                raw_image_paths = glob.glob(os.path.join(data_dir, "**", "*.jpg"), recursive=True)
+                for raw_image_path in raw_image_paths:
+                    self.images.append(raw_image_path)
+                    self.labels.append(i)
 
     def __len__(self):
         return len(self.images)

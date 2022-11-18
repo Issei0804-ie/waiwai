@@ -1,10 +1,21 @@
 import datetime
+import os.path
+
 import dataset_build
 import torch
 import pytorch_lightning as pl
 from model import MaskModel
 
-dataset = dataset_build.MaskDataset("dataset/with_mask", "dataset/no_mask")
+aug_downscale_path = os.path.join("aug_dataset","downscale")
+aug_flip_path = os.path.join("aug_dataset","flip")
+aug_blur_path = os.path.join("aug_dataset","blur")
+with_mask_path = os.path.join("dataset", "with_mask")
+no_mask_path = os.path.join("dataset", "no_mask")
+
+with_mask_dirs = [with_mask_path, os.path.join(with_mask_path, aug_downscale_path), os.path.join(with_mask_path, aug_flip_path), os.path.join(with_mask_path, aug_blur_path)]
+no_mask_dirs = [no_mask_path, os.path.join(no_mask_path, aug_downscale_path), os.path.join(no_mask_path, aug_flip_path), os.path.join(no_mask_path, aug_blur_path)]
+
+dataset = dataset_build.MaskDataset(with_mask_dirs, no_mask_dirs)
 
 n_samples = len(dataset)
 train_size = int(len(dataset) * 0.6)
