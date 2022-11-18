@@ -1,10 +1,10 @@
 import glob
 import os.path
 
-import torchvision.transforms
-from PIL import Image
 import torch
+import torchvision.transforms
 import torchvision.transforms as transforms
+from PIL import Image
 from torch.utils.data import Dataset
 
 
@@ -15,7 +15,9 @@ class MaskDataset(Dataset):
                 transforms.Resize(255),
                 transforms.CenterCrop(224),
                 transforms.ToTensor(),
-                transforms.Normalize((0.5508, 0.4830, 0.4514), (0.2582, 0.2582, 0.2582))
+                transforms.Normalize(
+                    (0.5508, 0.4830, 0.4514), (0.2582, 0.2582, 0.2582)
+                ),
             ]
         )
         self.images = []
@@ -24,7 +26,9 @@ class MaskDataset(Dataset):
         dirs = [mask_dirs, non_mask_dirs]
         for i in range(len(dirs)):
             for data_dir in dirs[i]:
-                raw_image_paths = glob.glob(os.path.join(data_dir, "**", "*.jpg"), recursive=True)
+                raw_image_paths = glob.glob(
+                    os.path.join(data_dir, "**", "*.jpg"), recursive=True
+                )
                 for raw_image_path in raw_image_paths:
                     self.images.append(raw_image_path)
                     self.labels.append(i)
